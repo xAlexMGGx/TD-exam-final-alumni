@@ -1,0 +1,38 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Authenticate with Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+    - uses: "google-github-actions/setup-gcloud@v2"
+      with:
+        install_components: "gke-gcloud-auth-plugin"
+    - name: Configure Docker
+      run: gcloud auth configure-docker gcr.io
+    - name: Build and push Docker image
+      run: |
+        docker build -t $IMAGE_NAME_WEB:$GITHUB_SHA source/web/
+        docker build -t $IMAGE_NAME_WEB:latest source/web/
+        docker push $IMAGE_NAME_WEB:$GITHUB_SHA
+        docker push $IMAGE_NAME_WEB:latest
+        docker build -t $IMAGE_NAME_STORAGE:$GITHUB_SHA source/storage/
+        docker build -t $IMAGE_NAME_STORAGE:latest source/storage/
+        docker push $IMAGE_NAME_STORAGE:$GITHUB_SHA
+        docker push $IMAGE_NAME_STORAGE:latest
+    - name: Deploy to GKE
+      run: |
+        gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE

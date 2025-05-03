@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: 
+spec:
+  serviceName: ""
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 
+  selector:
+    matchLabels:
+      app: 
+  template:
+    metadata:
+      labels:
+        app: 
+    spec:
+      containers:
+        - name: 
+          image: gcr.io/icai2025/storage:latest
+          imagePullPolicy: 
+          ports:
+            - containerPort: 
+          volumeMounts:
+            - name: 
+              mountPath: 
+  volumeClaimTemplates:
+    - metadata:
+        name: storage-volume
+      spec:
+        storageClassName: 
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage
+spec:
+  clusterIP: 
+  selector:
+    app: 
+  ports:
+    - port: 
