@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: my-ss
+  name: storage
 spec:
   serviceName: "storage"
   updateStrategy:
@@ -26,7 +26,7 @@ spec:
               mountPath: /data/storage
   volumeClaimTemplates:
     - metadata:
-        name: storage-volume
+        name: storage
       spec:
         storageClassName: storage
         accessModes: ["ReadWriteOnce"]
