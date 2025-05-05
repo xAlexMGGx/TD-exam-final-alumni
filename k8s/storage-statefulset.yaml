@@ -22,7 +22,7 @@ spec:
           ports:
             - containerPort: 3000
           volumeMounts:
-            - name: storage
+            - name: storage-volume
               mountPath: /data/storage
   volumeClaimTemplates:
     - metadata:
