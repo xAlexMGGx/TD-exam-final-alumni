@@ -22,11 +22,11 @@ spec:
           ports:
             - containerPort: 3000
           volumeMounts:
-            - name: storage-volume
-              mountPath: /data/storage
+            - name: storage
+              mountPath: /data
   volumeClaimTemplates:
     - metadata:
-        name: storage-volume
+        name: storage
       spec:
         storageClassName: standard
         resources:
