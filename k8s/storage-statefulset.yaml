@@ -29,10 +29,11 @@ spec:
         name: storage-volume
       spec:
         storageClassName: standard
-        accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 1Gi
+            accessModes: 
+            - ReadWriteOnce
 ---
 apiVersion: v1
 kind: Service
