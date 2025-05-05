@@ -6,9 +6,9 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-  IMAGE_NAME_WEB: gcr.io/${{ vars.GCP_PROJECT_ID }}/web
-  IMAGE_NAME_STORAGE: gcr.io/${{ vars.GCP_PROJECT_ID }}/storage
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  IMAGE_NAME_WEB: gcr.io/${{ secrets.GCP_PROJECT_ID }}/web
+  IMAGE_NAME_STORAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/storage
 
 jobs:
   deploy:
@@ -27,12 +27,12 @@ jobs:
       run: gcloud auth configure-docker gcr.io
     - name: Build and push Docker image
       run: |
-        docker build -t $IMAGE_NAME_WEB:$GITHUB_SHA 
-        docker build -t $IMAGE_NAME_WEB:latest 
+        docker build -t $IMAGE_NAME_WEB:$GITHUB_SHA source/web/
+        docker build -t $IMAGE_NAME_WEB:latest source/web/
         docker push $IMAGE_NAME_WEB:$GITHUB_SHA
         docker push $IMAGE_NAME_WEB:latest
-        docker build -t $IMAGE_NAME_STORAGE:$GITHUB_SHA 
-        docker build -t $IMAGE_NAME_STORAGE:latest 
+        docker build -t $IMAGE_NAME_STORAGE:$GITHUB_SHA source/storage/
+        docker build -t $IMAGE_NAME_STORAGE:latest source/storage/
         docker push $IMAGE_NAME_STORAGE:$GITHUB_SHA
         docker push $IMAGE_NAME_STORAGE:latest
     - name: Deploy to GKE
