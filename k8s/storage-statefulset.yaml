@@ -39,7 +39,7 @@ kind: Service
 metadata:
   name: storage
 spec:
-  clusterIP: LoadBalancer
+  clusterIP: None
   selector:
     app: storage
   ports:
