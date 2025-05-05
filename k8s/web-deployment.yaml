@@ -6,7 +6,7 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: 
+      app: my-app
   template:
     metadata:
       labels:
@@ -14,18 +14,18 @@ spec:
     spec:
       containers:
         - name: web
-          image: gcr.io/icai2025/web:latest
-          imagePullPolicy: 
+          image: gcr.io/lab6-id/web:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 
+            - containerPort: 3000
           env:
             - name: STORAGE_SVC
-              value: ""
+              value: "storage"
           livenessProbe:
             httpGet:
               path: /phrase
-              port:
-            periodSeconds: 15
+              port: 3000
+            periodSeconds: 2
 ---
 apiVersion: v1
 kind: Service
